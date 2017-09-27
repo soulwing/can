@@ -91,6 +91,11 @@ int child_fn(void *arg)
     exit(EXIT_FAILURE);
   }
 
+  if (mount(NULL, "/", NULL, MS_PRIVATE, NULL) != 0) {
+    perror("error unsharing root filesystem");
+    exit(EXIT_FAILURE);
+  }
+
   if (mount(NULL, ROOT_MOUNT_POINT, NULL, MS_PRIVATE, NULL) != 0) {
     perror("error unsharing root filesystem");
     exit(EXIT_FAILURE);
