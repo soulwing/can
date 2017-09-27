@@ -38,7 +38,7 @@ int mount_aufs(const char *path)
 {
   String *opts = aufs_opts();
 
-  int rc = mount("root", path, AUFS_TYPE, 0, dstr_text(aufs_opts));
+  int rc = mount("root", path, AUFS_TYPE, 0, dstr_text(opts));
   dstr_free(opts);
 
   return rc;
