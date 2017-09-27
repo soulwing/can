@@ -27,6 +27,12 @@
 #include <stdio.h>
 #include "dstring.h"
 
+typedef struct String {
+  char *s_text;
+  size_t s_size;
+  size_t s_used;
+} String;
+
 String *dstr_init(const char *text)
 {
   String *s = malloc(sizeof(String));

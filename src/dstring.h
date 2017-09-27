@@ -28,17 +28,40 @@
 #define   dstr_text(s)  (s->s_text)
 #define   dstr_len(s) 	(s->s_used)
 
-typedef struct {
-  char *s_text;
-  size_t s_size;
-  size_t s_used;
-} String;
+typedef struct String String;
 
-
+/*!
+ * \brief Creates a new String
+ *
+ * Creates a new String with the specified initial contents (which may be NULL if an empty
+ * string is desired). The contents of \c text are copied into an internal buffer of the
+ * String.
+ *
+ * \param[in] text initial contents of the String; may be NULL to create an empty String
+ *
+ * \return    pointer to a String structure which must be freed by the caller.
+ */
 String *dstr_init(const char *text);
 
+/*!
+ * \brief Appends text to an existing String
+ *
+ * Appends the given \c text to \s, expanding the buffer for \c s if necessary. If
+ * \c s is NULL, \c s remains unchanged.
+ *
+ * \param[in] text text to be appended to \c
+ */
 void dstr_append(String *s, const char *text);
 
+/*!
+ * \brief Releases all memory allocated to a String.
+ *
+ * Releases all memory allocated to \c s. It is an error to reference \c s after
+ * this function returns.
+ *
+ * \param[in] text text to be appended to \c
+ *
+ */
 void dstr_free(String *s);
 
 #endif /* _DSTRING_H */
