@@ -25,6 +25,6 @@
 
 #include <sys/types.h>
 
-int mount_tmpfs(const char *root_path, const char *path, size_t size);
+int mount_tmpfs(const char *root_path, const char *path);
 
 #endif /* ! _TMPFS_H */

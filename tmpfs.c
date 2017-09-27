@@ -31,7 +31,7 @@
 
 #define TMPFS_TYPE  "tmpfs"
 
-int mount_proc(const char *root_path, const char *path, size_t size)
+int mount_proc(const char *root_path, const char *path)
 {
   String *mount_path = dstr_init(root_path);
   dstr_append(mount_path, path);
@@ -42,3 +42,4 @@ int mount_proc(const char *root_path, const char *path, size_t size)
   dstr_free(mount_path);
   return rc;
 }
+
