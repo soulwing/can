@@ -27,6 +27,7 @@
 
 #include "dstring.h"
 #include "config.h"
+#include "proc.h"
 
 #define PROC_FS_TYPE  "proc"
 
