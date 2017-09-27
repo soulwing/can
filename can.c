@@ -81,6 +81,11 @@ int child_fn(void *arg)
     perror("error closing network namespace handle");
   }
   
+  if (mount(NULL, "/", NULL, MS_PRIVATE, NULL) != 0) {
+    perror("error unsharing root filesystem");
+    exit(EXIT_FAILURE);
+  }
+
   if (mount(NULL, PROC_PATH, NULL, MS_PRIVATE, NULL) != 0) {
     perror("error unsharing proc filesystem");
     exit(EXIT_FAILURE);
@@ -88,11 +93,6 @@ int child_fn(void *arg)
 
   if (mount_aufs(ROOT_MOUNT_POINT) != 0) {
     perror("error mounting container root filesystem");
-    exit(EXIT_FAILURE);
-  }
-
-  if (mount(NULL, "/", NULL, MS_PRIVATE, NULL) != 0) {
-    perror("error unsharing root filesystem");
     exit(EXIT_FAILURE);
   }
 
