@@ -45,7 +45,8 @@ int mount_aufs(const char *path)
 }
 
 static String * aufs_opts() {
-  String *opts = dstr_init(AUFS_CONTAINER_PATH);
+  String *opts = dstr_init("dirs=");
+  dstr_append(opts, AUFS_CONTAINER_PATH);
   dstr_append(opts, "=rw:");
   dstr_append(opts, AUFS_CONFIG_PATH);
   dstr_append(opts, "=ro");
