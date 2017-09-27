@@ -36,6 +36,7 @@
 
 #include "dstring.h"
 #include "aufs.h"
+#include "proc.h"
 #include "config.h"
 
 
@@ -91,7 +92,7 @@ int child_fn(void *arg)
   }
 
   if (mount_proc(ROOT_MOUNT_POINT) != 0) {
-    perror("error mounting proc filesystem");
+    perror("error mounting container proc filesystem");
     exit(EXIT_FAILURE);
   }
 
