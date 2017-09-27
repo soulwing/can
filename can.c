@@ -97,7 +97,7 @@ int child_fn(void *arg)
     exit(EXIT_FAILURE);
   }
 
-  if (mount_tmpfs(ROUTE_MOUNT_POINT, "/tmp") != 0) {
+  if (mount_tmpfs(ROOT_MOUNT_POINT, "/tmp") != 0) {
     perror("error mounting container temp filesystem");
     exit(EXIT_FAILURE);    
   }
