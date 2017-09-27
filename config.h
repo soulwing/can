@@ -31,9 +31,8 @@
 #define ROOT_MOUNT_POINT    "/var/can/mnt"
 #define PROC_PATH           "/proc"
 
-#define AUFS_LAYERS_PATH    "/var/aufs/layers"
-#define AUFS_CONFIG_PATH    "/var/aufs/config"
-#define AUFS_CONTAINER_PATH "/var/aufs/container"
-
+#define AUFS_LAYERS_PATH    "/var/can/aufs/layers"
+#define AUFS_CONFIG_PATH    "/var/can/aufs/config"
+#define AUFS_CONTAINER_PATH "/var/can/aufs/container"
 
 #endif /* ! _CONFIG_H */
