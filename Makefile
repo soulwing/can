@@ -5,12 +5,13 @@ RMDIR = rm -rf
 MKDIR = mkdir -p
 DEPS=$(OBJS:.o=.d)
 
+OBJS = can.o dstring.o
+
+
 %.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
 
-.PHONY all clean
-
-OBJS = can.o dstring.o
+.PHONY: all clean
 
 all: $(TARGET)
 
