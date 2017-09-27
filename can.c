@@ -13,12 +13,18 @@
 #include <sys/mount.h>
 #include <sys/stat.h>
 
+#include "dstring.h"
+
 #define CHILD_STACK_BYTES   (1024*1024)
 #define NET_NAMESPACE_PATH  "/var/run/netns/ns0"
 #define EXEC_PATH           "/bin/sh"
 #define HOST_NAME           "my-container"
-#define ROOT_FILESYSTEM     "/var/aufs/mnt"
-#define PROC_FILESYSTEM     "/proc"
+#define AUFS_LAYERS_PATH    "/var/aufs/layers"
+#define AUFS_CONFIG_PATH    "/var/aufs/config"
+#define AUFS_CONTAINER_PATH "/var/aufs/container"
+
+#define ROOT_MOUNT_POINT    "/var/aufs/mnt"
+#define PROC_PATH           "/proc"
 
 int child_fn(void *arg);
 
@@ -41,10 +47,6 @@ int child_fn(void *arg)
 {
   char * const argv[2] = { EXEC_PATH, NULL };
 
-  char * proc_mnt = malloc(strlen(ROOT_FILESYSTEM) + strlen(PROC_FILESYSTEM) + 1);
-  strncpy(proc_mnt, ROOT_FILESYSTEM, strlen(ROOT_FILESYSTEM) + 1);
-  strncat(proc_mnt, PROC_FILESYSTEM, strlen(PROC_FILESYSTEM) + 1);
-
   int ns = open(NET_NAMESPACE_PATH, O_RDONLY);
   if (ns == -1) {
     perror("error opening network namespace handle");
@@ -60,21 +62,25 @@ int child_fn(void *arg)
     perror("error closing network namespace handle");
   }
   
-  if (mount(NULL, PROC_FILESYSTEM, NULL, MS_PRIVATE, NULL) != 0) {
+  if (mount(NULL, PROC_PATH, NULL, MS_PRIVATE, NULL) != 0) {
     perror("error unsharing proc filesystem");
     exit(EXIT_FAILURE);
   }
 
-  if (mount(NULL, ROOT_FILESYSTEM, NULL, MS_PRIVATE, NULL) != 0) {
+  if (mount(NULL, ROOT_MOUNT_POINT, NULL, MS_PRIVATE, NULL) != 0) {
     perror("error unsharing root filesystem");
   }
 
-  if (mount("proc", proc_mnt, "proc", 0, NULL) != 0) {
+  String *proc_mnt = dstr_init(ROOT_MOUNT_POINT);
+  dstr_append(proc_mnt, PROC_PATH);
+
+  if (mount("proc", dstr_text(proc_mnt), "proc", 0, NULL) != 0) {
     perror("error mounting proc filesystem");
     exit(EXIT_FAILURE);
   }
+  dstr_free(proc_mnt);
 
-  if (chroot(ROOT_FILESYSTEM) != 0) {
+  if (chroot(ROOT_MOUNT_POINT) != 0) {
     perror("error changing root filesystem");
     exit(EXIT_FAILURE);
   }
