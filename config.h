@@ -20,14 +20,20 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _AUFS_H
-#define _AUFS_H
+#ifndef _CONFIG_H
+#define _CONFIG_H
 
-#define AUFS_TYPE           "aufs"
+#define CHILD_STACK_BYTES   (1024*1024)
+#define NET_NAMESPACE_PATH  "/var/run/netns/ns0"
+#define EXEC_PATH           "/bin/sh"
+#define HOST_NAME           "my-container"
+
+#define ROOT_MOUNT_POINT    "/var/can/mnt"
+#define PROC_PATH           "/proc"
+
 #define AUFS_LAYERS_PATH    "/var/aufs/layers"
 #define AUFS_CONFIG_PATH    "/var/aufs/config"
 #define AUFS_CONTAINER_PATH "/var/aufs/container"
 
-int mount_aufs(const char *path);
 
-#endif /* ! _AUFS_H */
+#endif /* ! _CONFIG_H */
