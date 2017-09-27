@@ -36,14 +36,8 @@
 
 #include "dstring.h"
 #include "aufs.h"
+#include "config.h"
 
-#define CHILD_STACK_BYTES   (1024*1024)
-#define NET_NAMESPACE_PATH  "/var/run/netns/ns0"
-#define EXEC_PATH           "/bin/sh"
-#define HOST_NAME           "my-container"
-
-#define ROOT_MOUNT_POINT    "/var/aufs/mnt"
-#define PROC_PATH           "/proc"
 
 int child_fn(void *arg);
 
@@ -96,19 +90,10 @@ int child_fn(void *arg)
     exit(EXIT_FAILURE);
   }
 
-  if (mount(NULL, ROOT_MOUNT_POINT, NULL, MS_PRIVATE, NULL) != 0) {
-    perror("error unsharing root filesystem");
-    exit(EXIT_FAILURE);
-  }
-
-  String *proc_mnt = dstr_init(ROOT_MOUNT_POINT);
-  dstr_append(proc_mnt, PROC_PATH);
-
-  if (mount("proc", dstr_text(proc_mnt), "proc", 0, NULL) != 0) {
+  if (mount_proc(ROOT_MOUNT_POINT) != 0) {
     perror("error mounting proc filesystem");
     exit(EXIT_FAILURE);
   }
-  dstr_free(proc_mnt);
 
   if (chroot(ROOT_MOUNT_POINT) != 0) {
     perror("error changing root filesystem");
