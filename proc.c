@@ -35,10 +35,8 @@ int mount_proc(const char *root_path)
   String *proc_path = dstr_init(root_path);
   
   dstr_append(proc_path, PROC_PATH);
-  if (mount(PROC_FS_TYPE, dstr_text(proc_path), PROC_FS_TYPE, 0, NULL) != 0) {
-    perror("error mounting proc filesystem");
-    exit(EXIT_FAILURE);
-  }
-  
+  int rc = mount(PROC_FS_TYPE, dstr_text(proc_path), PROC_FS_TYPE, 0, NULL);
+
   dstr_free(proc_mnt);
+  return rc;
 }
