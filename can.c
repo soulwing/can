@@ -14,14 +14,12 @@
 #include <sys/stat.h>
 
 #include "dstring.h"
+#include "aufs.h"
 
 #define CHILD_STACK_BYTES   (1024*1024)
 #define NET_NAMESPACE_PATH  "/var/run/netns/ns0"
 #define EXEC_PATH           "/bin/sh"
 #define HOST_NAME           "my-container"
-#define AUFS_LAYERS_PATH    "/var/aufs/layers"
-#define AUFS_CONFIG_PATH    "/var/aufs/config"
-#define AUFS_CONTAINER_PATH "/var/aufs/container"
 
 #define ROOT_MOUNT_POINT    "/var/aufs/mnt"
 #define PROC_PATH           "/proc"
@@ -32,6 +30,7 @@ int main(int argc, char * const argv[])
 {
   void *child_stack = malloc(CHILD_STACK_BYTES);
 
+  mount_aufs(ROOT_MOUNT_POINT);
   pid_t child_pid = clone(child_fn, child_stack + CHILD_STACK_BYTES, 
       CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWUTS | SIGCHLD, NULL);
   if (child_pid == -1) {
