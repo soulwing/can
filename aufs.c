@@ -26,26 +26,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <sys/mount.h>
 
 #include "dstring.h"
 #include "aufs.h"
 
-static char * const aufs_opts();
+static String * aufs_opts();
 static void append_layers(String *opts);
 
 int mount_aufs(const char *path)
 {
-  printf("aufs opts: %s\n", aufs_opts());
-  return 0;
+  String *opts = aufs_opts();
+
+  int rc = mount("root", path, AUFS_TYPE, 0, dstr_text(aufs_opts));
+  dstr_free(opts);
+
+  return rc;
 }
 
-static char * const aufs_opts() {
+static String * aufs_opts() {
   String *opts = dstr_init(AUFS_CONTAINER_PATH);
   dstr_append(opts, "=rw:");
   dstr_append(opts, AUFS_CONFIG_PATH);
   dstr_append(opts, "=ro");
   append_layers(opts);
-  return dstr_text(opts);
+  return opts;
 }
 
 static void append_layers(String *opts)

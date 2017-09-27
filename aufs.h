@@ -22,6 +22,7 @@
 
 #ifndef _AUFS_H
 
+#define AUFS_TYPE           "aufs"
 #define AUFS_LAYERS_PATH    "/var/aufs/layers"
 #define AUFS_CONFIG_PATH    "/var/aufs/config"
 #define AUFS_CONTAINER_PATH "/var/aufs/container"
