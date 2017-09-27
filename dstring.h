@@ -25,9 +25,6 @@
 
 #include <sys/types.h>
 
-#define   dstr_text(s)  (s->s_text)
-#define   dstr_len(s) 	(s->s_used)
-
 typedef struct String String;
 
 /*!
@@ -63,5 +60,10 @@ void dstr_append(String *s, const char *text);
  *
  */
 void dstr_free(String *s);
+
+char * const dstr_text(String *s);
+
+size_t dstr_len(String *s);
+
 
 #endif /* _DSTRING_H */

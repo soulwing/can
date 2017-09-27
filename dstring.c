@@ -60,3 +60,13 @@ void dstr_free(String *s) {
   free(s->s_text);
   free(s);
 }
+
+char * const dstr_text(String *s)
+{
+  return s->s_text;
+}
+
+size_t dstr_len(String *s)
+{
+  return s->s_used;
+}
