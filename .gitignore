@@ -1,16 +1,11 @@
+can
+
 CVS
 RCS
 .svn
 target
 build
 DerivedData
-
-.idea
-*.iml
-.project
-.classpath
-.settings
-.metadata
 
 *.class
 *.o
