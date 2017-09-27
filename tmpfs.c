@@ -36,8 +36,8 @@ int mount_proc(const char *root_path, const char *path)
   String *mount_path = dstr_init(root_path);
   dstr_append(mount_path, path);
 
-  int rc = mount(TMPFS_TYPE, dstr_text(mount_path), TMPFS_TYPE, MS_NOEXEC, MS_NOSUID, 
-      "size=101468k,mode=755");
+  int rc = mount(TMPFS_TYPE, dstr_text(mount_path), TMPFS_TYPE, 
+        MS_NOEXEC | MS_NOSUID, "size=101468k,mode=755");
 
   dstr_free(mount_path);
   return rc;
