@@ -5,7 +5,7 @@ RMDIR = rm -rf
 MKDIR = mkdir -p
 DEPS=$(OBJS:.o=.d)
 
-OBJS = can.o dstring.o aufs.o
+OBJS = can.o dstring.o aufs.o proc.o
 
 
 %.o: %.c
