@@ -63,6 +63,7 @@ static void append_layers(String *opts)
         && strncmp(name, "..", 2) != 0) {
       dstr_append(opts, ":");
       dstr_append(opts, AUFS_LAYERS_PATH);
+      dstr_append(opts, "/");
       dstr_append(opts, name);
       dstr_append(opts, "=ro");
     }
