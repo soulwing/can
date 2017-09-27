@@ -30,9 +30,8 @@
 #include "dstring.h"
 #include "aufs.h"
 
-char * const aufs_opts();
-
-void append_layers(String *opts);
+static char * const aufs_opts();
+static void append_layers(String *opts);
 
 int mount_aufs(const char *path)
 {
