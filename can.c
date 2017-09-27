@@ -93,12 +93,22 @@ int child_fn(void *arg)
   }
 
   if (mount_proc(ROOT_MOUNT_POINT) != 0) {
-    perror("error mounting container proc filesystem");
+    perror("error mounting container /proc filesystem");
     exit(EXIT_FAILURE);
   }
 
   if (mount_tmpfs(ROOT_MOUNT_POINT, "/tmp") != 0) {
-    perror("error mounting container temp filesystem");
+    perror("error mounting container /tmp filesystem");
+    exit(EXIT_FAILURE);    
+  }
+  
+  if (mount_tmpfs(ROOT_MOUNT_POINT, "/var/run") != 0) {
+    perror("error mounting container /var/run filesystem");
+    exit(EXIT_FAILURE);    
+  }
+  
+  if (mount_tmpfs(ROOT_MOUNT_POINT, "/var/tmp") != 0) {
+    perror("error mounting container /var/tmp filesystem");
     exit(EXIT_FAILURE);    
   }
   
