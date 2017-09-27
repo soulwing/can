@@ -37,6 +37,7 @@
 #include "dstring.h"
 #include "aufs.h"
 #include "proc.h"
+#include "tmpfs.h"
 #include "config.h"
 
 
@@ -96,6 +97,11 @@ int child_fn(void *arg)
     exit(EXIT_FAILURE);
   }
 
+  if (mount_tmpfs(ROUTE_MOUNT_POINT, "/tmp") != 0) {
+    perror("error mounting container temp filesystem");
+    exit(EXIT_FAILURE);    
+  }
+  
   if (chroot(ROOT_MOUNT_POINT) != 0) {
     perror("error changing root filesystem");
     exit(EXIT_FAILURE);
