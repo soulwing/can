@@ -30,7 +30,6 @@ int main(int argc, char * const argv[])
 {
   void *child_stack = malloc(CHILD_STACK_BYTES);
 
-  mount_aufs(ROOT_MOUNT_POINT);
   pid_t child_pid = clone(child_fn, child_stack + CHILD_STACK_BYTES, 
       CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWUTS | SIGCHLD, NULL);
   if (child_pid == -1) {
@@ -68,6 +67,12 @@ int child_fn(void *arg)
 
   if (mount(NULL, ROOT_MOUNT_POINT, NULL, MS_PRIVATE, NULL) != 0) {
     perror("error unsharing root filesystem");
+    exit(EXIT_FAILURE);
+  }
+
+  if (mount_aufs(ROOT_MOUNT_POINT) != 0) {
+    perror("error mounting container root filesystem");
+    exit(EXIT_FAILURE);
   }
 
   String *proc_mnt = dstr_init(ROOT_MOUNT_POINT);
