@@ -43,11 +43,11 @@ static char * const *command_argv = 0;
 
 
 static char * const default_command_argv[] = { DEFAULT_COMMAND, 0 };
-static const char * opts = "tn:h:r:f:";
+static const char * opts = "n:h:r:f:";
 
 static struct option long_opts[] = 
 {
-  { "tmpfs", no_argument, &use_tmpfs, 1 },
+  { "no-tmpfs", no_argument, &use_tmpfs, 0 },
   { "netns", required_argument, 0, 'n' },
   { "hostname", required_argument, 0, 'h' },
   { "root", required_argument, 0, 'r' },
@@ -64,9 +64,6 @@ int conf_init(int argc, char * const argv[])
       &option_index)) != -1) {
     switch (c) {
       case 0:
-        break;
-      case 't':
-        use_tmpfs = 1;
         break;
       case 'n':
         netns_name = optarg;
