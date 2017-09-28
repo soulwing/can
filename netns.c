@@ -20,34 +20,26 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _CONFIG_H
-#define _CONFIG_H
+#include <stdlib.h>
+#include <unistd.h>
 
-#include "dstring.h"
+#include "netns.h"
 
-#define DEFAULT_COMMAND     "/bin/sh"
-#define DEFAULT_HOST_NAME   "can"
 
-#define DEFAULT_ROOT_PATH   "/var/can/mnt"
-#define DEFAULT_AUFS_PATH   "/var/can/aufs"
-#define PROC_PATH           "/proc"
+int set_netns(const char * const name)
+{
+  String *ns_path = dstr_init(NET_NAMESPACE_PATH);
+  dstr_append(ns_path, "/");
+  dstr_append(ns_path, name);
 
-void conf_init(int argc, char * const argv[]);
+  int ns = open(dstr_text(ns_path), O_RDONLY);
+  if (ns == -1) return -1;
 
-int conf_use_tmpfs(void);
+  if (setns(ns, CLONE_NEWNET) != 0) return -1;
 
-int conf_clone_newnet(void);
+  if (close(ns) != 0) return -1;
 
-int conf_clone_newuts(void);
+  dstr_free(ns_path);
 
-char * const conf_netns_name(void);
-
-char * const conf_host_name(void);
-
-char ** const conf_command_argv(void);
-
-char * const conf_root_path(void);
-
-char * const conf_aufs_path(void);
-
-#endif /* ! _CONFIG_H */
+  return 0;
+}

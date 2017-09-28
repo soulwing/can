@@ -38,8 +38,10 @@
 #include "aufs.h"
 #include "proc.h"
 #include "tmpfs.h"
+#include "netns.h"
 #include "config.h"
 
+#define CHILD_STACK_BYTES   (1024*1024)
 
 int child_fn(void *arg);
 
@@ -47,8 +49,10 @@ int main(int argc, char * const argv[])
 {
   void *child_stack = malloc(CHILD_STACK_BYTES);
 
+  conf_init(argc, argv);
+  
   pid_t child_pid = clone(child_fn, child_stack + CHILD_STACK_BYTES, 
-      CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWUTS | SIGCHLD, NULL);
+      CLONE_NEWPID | CLONE_NEWNS | SIGCHLD, NULL);
   if (child_pid == -1) {
     perror("error cloning process");
     exit(EXIT_FAILURE);
@@ -62,73 +66,85 @@ int child_fn(void *arg)
 {
   char * const argv[2] = { EXEC_PATH, NULL };
 
-  int ns = open(NET_NAMESPACE_PATH, O_RDONLY);
-  if (ns == -1) {
-    perror("error opening network namespace handle");
-    exit(EXIT_FAILURE);
+  /* set network namespace if specified */
+  const char * const netns_name = conf_netns_name();
+  if (netns_name != null) {
+    if (set_net_ns(netns_name) != 0) {
+      perror("error setting network namespace");
+      exit(EXIT_FAILURE);
+    }
   }
 
-  if (setns(ns, CLONE_NEWNET) != 0) {
-    perror("error setting network namespace");
-    exit(EXIT_FAILURE);
+  /* set hostname for our can, if desired */
+  const char * const hostname = conf_host_name();
+  if (hostname != NULL) {
+    if (unshare(CLONE_UTS) != 0) {
+      perror("error creating UTS namespace");
+      exit(EXIT_FAILURE);
+    }
+    if (sethostname(hostname, strlen(hostname)) != 0) {
+      perror("error setting hostname");
+      exit(EXIT_FAILURE);
+    }
   }
 
-  if (close(ns) != 0) {
-    perror("error closing network namespace handle");
-  }
-  
+  /* don't want to inherit shared root mount point in our namespace */
   if (mount(NULL, "/", NULL, MS_PRIVATE, NULL) != 0) {
     perror("error unsharing root filesystem");
     exit(EXIT_FAILURE);
   }
 
+  /* don't want other namespaces to see our /proc mount */
   if (mount(NULL, PROC_PATH, NULL, MS_PRIVATE, NULL) != 0) {
     perror("error unsharing proc filesystem");
     exit(EXIT_FAILURE);
   }
 
-  if (mount_aufs(ROOT_MOUNT_POINT) != 0) {
+  /* mount root filesystem for our can */
+  const char * const root_path = conf_root_path();
+  if (mount_aufs(root_path) != 0) {
     perror("error mounting container root filesystem");
     exit(EXIT_FAILURE);
   }
 
-  if (mount_proc(ROOT_MOUNT_POINT) != 0) {
+  /* mount proc filesystem for our can */
+  if (mount_proc(root_path) != 0) {
     perror("error mounting container /proc filesystem");
     exit(EXIT_FAILURE);
   }
 
-  if (mount_tmpfs(ROOT_MOUNT_POINT, "/tmp") != 0) {
-    perror("error mounting container /tmp filesystem");
-    exit(EXIT_FAILURE);    
+  /* use tmpfs for paths with transient stuff in them, if desired */
+  if (conf_use_tmpfs()) {
+    if (mount_tmpfs(root_path, "/tmp") != 0) {
+      perror("error mounting container /tmp filesystem");
+      exit(EXIT_FAILURE);    
+    }
+    
+    if (mount_tmpfs(root_path, "/var/run") != 0) {
+      perror("error mounting container /var/run filesystem");
+      exit(EXIT_FAILURE);    
+    }
+    
+    if (mount_tmpfs(root_path, "/var/tmp") != 0) {
+      perror("error mounting container /var/tmp filesystem");
+      exit(EXIT_FAILURE);    
+    }    
   }
   
-  if (mount_tmpfs(ROOT_MOUNT_POINT, "/var/run") != 0) {
-    perror("error mounting container /var/run filesystem");
-    exit(EXIT_FAILURE);    
-  }
-  
-  if (mount_tmpfs(ROOT_MOUNT_POINT, "/var/tmp") != 0) {
-    perror("error mounting container /var/tmp filesystem");
-    exit(EXIT_FAILURE);    
-  }
-  
-  if (chroot(ROOT_MOUNT_POINT) != 0) {
+  /* set root filesystem for our can */
+  if (chroot(root_path) != 0) {
     perror("error changing root filesystem");
     exit(EXIT_FAILURE);
   }
-
   if (chdir("/") != 0) {
     perror("error setting root as current directory");
     exit(EXIT_FAILURE);
   }
 
-  if (sethostname(HOST_NAME, strlen(HOST_NAME)) != 0) {
-    perror("error setting hostname");
-    exit(EXIT_FAILURE);
-  }
-
-  if (execv(EXEC_PATH, argv) != 0) {
-    perror("error executing shell");
+  /* execute the specified command */
+  const char * const command_argv = conf_command_argv();
+  if (execv(argv[0], argv) != 0) {
+    perror("error executing command");
     exit(EXIT_FAILURE);
   }
 

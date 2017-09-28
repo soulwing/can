@@ -34,9 +34,13 @@
 
 #define SOURCE_NAME         "root"
 #define AUFS_TYPE           "aufs"
+#define AUFS_LAYERS_PATH    "/layers"
+#define AUFS_CONFIG_PATH    "/config"
+#define AUFS_CONTAINER_PATH "/container"
+
 
 static String * aufs_opts();
-static void append_layers(String *opts);
+static void append_layers(String *opts, char * const aufs_path);
 
 int mount_aufs(const char *path)
 {
@@ -53,16 +57,19 @@ int mount_aufs(const char *path)
 }
 
 static String * aufs_opts() {
+  const char * const aufs_path = conf_aufs_path();
   String *opts = dstr_init("dirs=");
+  dstr_append(opts, aufs_path);
   dstr_append(opts, AUFS_CONTAINER_PATH);
   dstr_append(opts, "=rw:");
+  dstr_append(opts, aufs_path);
   dstr_append(opts, AUFS_CONFIG_PATH);
   dstr_append(opts, "=ro");
-  append_layers(opts);
+  append_layers(opts, aufs_path);
   return opts;
 }
 
-static void append_layers(String *opts)
+static void append_layers(String *opts, const char * const aufs_path);
 {
   struct dirent **namelist;
   
@@ -76,6 +83,7 @@ static void append_layers(String *opts)
     if (strncmp(name, ".", 2) != 0
         && strncmp(name, "..", 2) != 0) {
       dstr_append(opts, ":");
+      dstr_append(opts, aufs_path);
       dstr_append(opts, AUFS_LAYERS_PATH);
       dstr_append(opts, "/");
       dstr_append(opts, name);

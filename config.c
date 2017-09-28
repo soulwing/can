@@ -20,34 +20,47 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _CONFIG_H
-#define _CONFIG_H
+#include "config.h"
 
-#include "dstring.h"
+static int use_tmpfs = 1;
+static char * const netns_name = "ns0";
+static char * const host_name = DEFAULT_HOST_NAME;
+static char * const root_path = DEFAULT_ROOT_PATH;
+static char * const aufs_path = DEFAULT_AUFS_PATH;
+static char * const command_argv[] = { DEFAULT_COMMAND, NULL }
 
-#define DEFAULT_COMMAND     "/bin/sh"
-#define DEFAULT_HOST_NAME   "can"
 
-#define DEFAULT_ROOT_PATH   "/var/can/mnt"
-#define DEFAULT_AUFS_PATH   "/var/can/aufs"
-#define PROC_PATH           "/proc"
+int conf_init(int argc, char * const argv[])
+{
+  return 0;
+}
 
-void conf_init(int argc, char * const argv[]);
+int conf_use_tmpfs(void)
+{
+  return use_tmpfs;
+}
 
-int conf_use_tmpfs(void);
+char * const conf_netns_name(void)
+{
+  return netns_name;
+}
 
-int conf_clone_newnet(void);
+char * const conf_host_name(void)
+{
+  return host_name;
+}
 
-int conf_clone_newuts(void);
+char * const conf_root_path(void)
+{
+  return root_path;
+}
 
-char * const conf_netns_name(void);
+char * const conf_aufs_path(void)
+{
+  return aufs_path;
+}
 
-char * const conf_host_name(void);
-
-char ** const conf_command_argv(void);
-
-char * const conf_root_path(void);
-
-char * const conf_aufs_path(void);
-
-#endif /* ! _CONFIG_H */
+char ** const conf_command_argv(void)
+{
+  return command_argv;
+}
