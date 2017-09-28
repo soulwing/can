@@ -23,6 +23,7 @@
 #define _GNU_SOURCE
 
 #include "config.h"
+#include <stdio.h>
 #include <unistd.h>
 #include <getopt.h>
 
@@ -72,8 +73,11 @@ int conf_init(int argc, char * const argv[])
         break;
       case 'f':
         aufs_path = optarg;
+        break;
       case '?':
         return -1;
+      default:
+        abort();
     }
 
   }
@@ -82,6 +86,15 @@ int conf_init(int argc, char * const argv[])
     command_argv = argv + optind;
   }
 
+  printf("use_tmpfs=%d netns_name=%s root_path=%s aufs_path=%s host_name=%s\n",
+      use_tmpfs, netns_name, root_path, host_name);
+
+  int i = 0;
+  printf("command: ");
+  while (command_argv[i] != 0) {
+    printf("%s ", command_argv[i]);
+    i++;
+  }
   return 0;
 }
 
