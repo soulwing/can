@@ -23,6 +23,8 @@
 #define _GNU_SOURCE
 
 #include "config.h"
+#include <unistd.h>
+#include <getopt.h>
 
 static int use_tmpfs = 1;
 static char * netns_name = "ns0";
