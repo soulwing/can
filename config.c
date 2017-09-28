@@ -31,9 +31,52 @@ static char * const root_path = DEFAULT_ROOT_PATH;
 static char * const aufs_path = DEFAULT_AUFS_PATH;
 static char * const command_argv[] = { DEFAULT_COMMAND, 0 };
 
+static char * opts = "tn:h::r:f:";
+
+static struct option long_opts[] = 
+{
+  { "tmpfs", no_argument, &use_tmpfs, 1 },
+  { "netns", required_argument, 0, 'n' },
+  { "hostname", optional_argument, 0, 'h' },
+  { "root", required_argument, 0, 'r' },
+  { "fs", required_argument, 0, 'f' }
+};
 
 int conf_init(int argc, char * const argv[])
 {
+  int c;
+  int option_index = 0;
+
+  opterr = 1;
+  while ((c = getopt_long(argc, argv, opts, long_opts, 
+      &option_index)) != -1) {
+    switch (c) {
+      case 0:
+        break;
+      case 't':
+        use_tmpfs = 1;
+        break;
+      case 'n':
+        netns_name = optarg;
+        break;
+      case 'h':
+        host_name = optarg != 0 ? optarg : DEFAULT_HOST_NAME;
+        break;
+      case 'r':
+        root_path = optarg;
+        break;
+      case 'f':
+        aufs_path = optarg;
+      case '?':
+        return -1
+    }
+
+  }
+
+  if (optind < argc) {
+    command_argv = argv + optind;
+  }
+
   return 0;
 }
 
