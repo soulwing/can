@@ -39,7 +39,7 @@ static char * const *command_argv = 0;
 
 
 static char * const default_command_argv[] = { DEFAULT_COMMAND, 0 };
-static const char * opts = "tn:h::r:f:";
+static const char * opts = "tn:h:r:f:";
 
 static struct option long_opts[] = 
 {
@@ -68,7 +68,7 @@ int conf_init(int argc, char * const argv[])
         netns_name = optarg;
         break;
       case 'h':
-        host_name = optarg != 0 ? optarg : DEFAULT_HOST_NAME;
+        host_name = optarg;
         break;
       case 'r':
         root_path = optarg;
@@ -88,18 +88,6 @@ int conf_init(int argc, char * const argv[])
     command_argv = argv + optind;
   }
 
-  printf("use_tmpfs=%d netns_name=%s root_path=%s aufs_path=%s host_name=%s\n",
-      use_tmpfs, netns_name, root_path, aufs_path, host_name);
-
-  if (command_argv != 0) {
-    int i = 0;
-    printf("command: ");
-    while (command_argv[i] != 0) {
-      printf("%s ", command_argv[i]);
-      i++;
-    }
-  }
-    
   return 0;
 }
 
