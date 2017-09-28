@@ -48,7 +48,7 @@ int main(int argc, char * const argv[])
   void *child_stack = malloc(CHILD_STACK_BYTES);
 
   if (conf_init(argc, argv) != 0) {
-    fputs("usage error", stderr);
+    conf_usage(argv[0], stderr);
     exit(EXIT_FAILURE);
   }
 

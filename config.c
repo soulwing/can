@@ -60,7 +60,7 @@ void conf_usage(const char *argv0, FILE *out)
   fprintf(out, "options\n");
   fprintf(out, "  -f path, --fs path         filesystem location for AUFS branches\n");
   fprintf(out, "  -r path, --root path       path at which to mount the can's root filesystem\n");
-  fprintf(out, "  -n name, --netns name      name of an existing network namespace to join in the can\n");
+  fprintf(out, "  -n name, --netns name      name of an existing network namespace for the can\n");
   fprintf(out, "  -h name, --hostname name   host name for the can\n");
   fprintf(out, "  --no-tmpfs                 don't use tmpfs for /tmp, /run, etc\n");
   fflush(out);
