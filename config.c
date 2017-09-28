@@ -49,7 +49,7 @@ static struct option long_opts[] =
 {
   { "tmpfs", no_argument, &use_tmpfs, 1 },
   { "netns", required_argument, 0, 'n' },
-  { "hostname", optional_argument, 0, 'h' },
+  { "hostname", required_argument, 0, 'h' },
   { "root", required_argument, 0, 'r' },
   { "fs", required_argument, 0, 'f' }
 };
