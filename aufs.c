@@ -57,7 +57,7 @@ int mount_aufs(const char *path)
 }
 
 static String * aufs_opts() {
-  const char * const aufs_path = conf_aufs_path();
+  char * const aufs_path = conf_aufs_path();
   String *opts = dstr_init("dirs=");
   dstr_append(opts, aufs_path);
   dstr_append(opts, AUFS_CONTAINER_PATH);
@@ -69,7 +69,7 @@ static String * aufs_opts() {
   return opts;
 }
 
-static void append_layers(String *opts, char * const aufs_path);
+static void append_layers(String *opts, char * const aufs_path)
 {
   struct dirent **namelist;
   
