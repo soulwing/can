@@ -32,7 +32,7 @@ static char * netns_name = "ns0";
 static const char *host_name = DEFAULT_HOST_NAME;
 static const char *root_path = DEFAULT_ROOT_PATH;
 static const char *aufs_path = DEFAULT_AUFS_PATH;
-static char * const command_argv = 0;
+static char * const *command_argv = 0;
 
 
 static char * const default_command_argv[] = { DEFAULT_COMMAND, 0 };
