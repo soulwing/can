@@ -28,6 +28,10 @@
 #include <unistd.h>
 #include <getopt.h>
 
+#define DEFAULT_COMMAND     "/bin/sh"
+#define DEFAULT_ROOT_PATH   "/var/can/mnt"
+#define DEFAULT_AUFS_PATH   "/var/can/aufs"
+
 static int use_tmpfs = 1;
 static char * netns_name = 0;
 static const char *host_name = 0;

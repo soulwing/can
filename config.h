@@ -26,7 +26,6 @@
 #include "dstring.h"
 
 #define DEFAULT_COMMAND     "/bin/sh"
-#define DEFAULT_HOST_NAME   "can"
 
 #define DEFAULT_ROOT_PATH   "/var/can/mnt"
 #define DEFAULT_AUFS_PATH   "/var/can/aufs"
