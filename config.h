@@ -40,10 +40,10 @@ char * const conf_netns_name(void);
 
 char * const conf_host_name(void);
 
-char ** const conf_command_argv(void);
-
 char * const conf_root_path(void);
 
 char * const conf_aufs_path(void);
+
+char * const * conf_command_argv(void);
 
 #endif /* ! _CONFIG_H */

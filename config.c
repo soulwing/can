@@ -29,7 +29,7 @@ static char * const netns_name = "ns0";
 static char * const host_name = DEFAULT_HOST_NAME;
 static char * const root_path = DEFAULT_ROOT_PATH;
 static char * const aufs_path = DEFAULT_AUFS_PATH;
-static char * const command_argv[] = { DEFAULT_COMMAND, NULL }
+static char * const command_argv[] = { DEFAULT_COMMAND, 0 };
 
 
 int conf_init(int argc, char * const argv[])
@@ -62,7 +62,7 @@ char * const conf_aufs_path(void)
   return aufs_path;
 }
 
-char ** const conf_command_argv(void)
+char * const * conf_command_argv(void)
 {
   return command_argv;
 }
