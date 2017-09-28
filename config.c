@@ -24,11 +24,12 @@
 
 #include "config.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
 
 static int use_tmpfs = 1;
-static char * netns_name = "ns0";
+static char * netns_name = 0;
 
 static const char *host_name = DEFAULT_HOST_NAME;
 static const char *root_path = DEFAULT_ROOT_PATH;
