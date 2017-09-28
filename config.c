@@ -73,7 +73,7 @@ int conf_init(int argc, char * const argv[])
       case 'f':
         aufs_path = optarg;
       case '?':
-        return -1
+        return -1;
     }
 
   }
