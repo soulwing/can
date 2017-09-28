@@ -36,14 +36,14 @@ int conf_init(int argc, char * const argv[]);
 
 int conf_use_tmpfs(void);
 
-char * const conf_netns_name(void);
+const char *conf_netns_name(void);
 
-char * const conf_host_name(void);
+const char *conf_host_name(void);
 
-char * const conf_root_path(void);
+const char *conf_root_path(void);
 
-char * const conf_aufs_path(void);
+const char *conf_aufs_path(void);
 
-char * const * conf_command_argv(void);
+const char **conf_command_argv(void);
 
 #endif /* ! _CONFIG_H */

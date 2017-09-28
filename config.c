@@ -25,13 +25,16 @@
 #include "config.h"
 
 static int use_tmpfs = 1;
-static char * const netns_name = "ns0";
-static char * const host_name = DEFAULT_HOST_NAME;
-static char * const root_path = DEFAULT_ROOT_PATH;
-static char * const aufs_path = DEFAULT_AUFS_PATH;
-static char * const command_argv[] = { DEFAULT_COMMAND, 0 };
+static char * netns_name = "ns0";
 
-static char * opts = "tn:h::r:f:";
+static const char *host_name = DEFAULT_HOST_NAME;
+static const char *root_path = DEFAULT_ROOT_PATH;
+static const char *aufs_path = DEFAULT_AUFS_PATH;
+static const char *command_argv[] = { DEFAULT_COMMAND, 0 };
+
+
+static const char *default_command_argv[] = { DEFAULT_COMMAND, 0 };
+static const char * opts = "tn:h::r:f:";
 
 static struct option long_opts[] = 
 {
@@ -85,27 +88,27 @@ int conf_use_tmpfs(void)
   return use_tmpfs;
 }
 
-char * const conf_netns_name(void)
+const char * conf_netns_name(void)
 {
   return netns_name;
 }
 
-char * const conf_host_name(void)
+const char * conf_host_name(void)
 {
   return host_name;
 }
 
-char * const conf_root_path(void)
+const char * conf_root_path(void)
 {
   return root_path;
 }
 
-char * const conf_aufs_path(void)
+const char * conf_aufs_path(void)
 {
   return aufs_path;
 }
 
-char * const * conf_command_argv(void)
+const char **conf_command_argv(void)
 {
   return command_argv;
 }
