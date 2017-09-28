@@ -30,10 +30,11 @@
 
 static int use_tmpfs = 1;
 static char * netns_name = 0;
+static const char *host_name = 0;
 
-static const char *host_name = DEFAULT_HOST_NAME;
 static const char *root_path = DEFAULT_ROOT_PATH;
 static const char *aufs_path = DEFAULT_AUFS_PATH;
+
 static char * const *command_argv = 0;
 
 
