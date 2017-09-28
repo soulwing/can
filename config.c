@@ -51,7 +51,8 @@ static struct option long_opts[] =
   { "netns", required_argument, 0, 'n' },
   { "hostname", required_argument, 0, 'h' },
   { "root", required_argument, 0, 'r' },
-  { "fs", required_argument, 0, 'f' }
+  { "fs", required_argument, 0, 'f' },
+  { 0, 0, 0, 0 }
 };
 
 void conf_usage(const char *argv0, FILE *out)
@@ -71,6 +72,7 @@ int conf_init(int argc, char * const argv[])
   int c;
   int option_index = 0;
 
+  opterr = 0;
   while ((c = getopt_long(argc, argv, opts, long_opts, 
       &option_index)) != -1) {
     switch (c) {
@@ -89,9 +91,8 @@ int conf_init(int argc, char * const argv[])
         aufs_path = optarg;
         break;
       case '?':
-        return -1;
       default:
-        abort();
+        return -1;
     }
 
   }
