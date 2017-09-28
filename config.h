@@ -23,13 +23,13 @@
 #ifndef _CONFIG_H
 #define _CONFIG_H
 
+#include <stdio.h>
+
 #include "dstring.h"
 
-#define DEFAULT_COMMAND     "/bin/sh"
-
-#define DEFAULT_ROOT_PATH   "/var/can/mnt"
-#define DEFAULT_AUFS_PATH   "/var/can/aufs"
 #define PROC_PATH           "/proc"
+
+void conf_usage(const char *argv0, FILE *out);
 
 int conf_init(int argc, char * const argv[]);
 
