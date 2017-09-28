@@ -72,8 +72,12 @@ static String * aufs_opts() {
 static void append_layers(String *opts, char * const aufs_path)
 {
   struct dirent **namelist;
-  
-  int n = scandir(AUFS_LAYERS_PATH, &namelist, NULL, versionsort);
+  String *path = dstr_init(aufs_path);
+  dstr_append(AUFS_LAYERS_PATH);
+
+  int n = scandir(dstr_text(path), &namelist, NULL, versionsort);
+  dstr_free(path);
+
   if (n < 0) {
     perror("scandir");
     exit(EXIT_FAILURE);
