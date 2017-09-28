@@ -68,7 +68,7 @@ int child_fn(void *arg)
 {
 
   /* set network namespace if specified */
-  const char * const netns_name = conf_netns_name();
+  char * const netns_name = conf_netns_name();
   if (netns_name != null) {
     if (set_netns(netns_name) != 0) {
       perror("error setting network namespace");
@@ -77,7 +77,7 @@ int child_fn(void *arg)
   }
 
   /* set hostname for our can, if desired */
-  const char * const hostname = conf_host_name();
+  char * const hostname = conf_host_name();
   if (hostname != NULL) {
     if (unshare(CLONE_NEWUTS) != 0) {
       perror("error creating UTS namespace");
@@ -102,7 +102,7 @@ int child_fn(void *arg)
   }
 
   /* mount root filesystem for our can */
-  const char * const root_path = conf_root_path();
+  char * const root_path = conf_root_path();
   if (mount_aufs(root_path) != 0) {
     perror("error mounting container root filesystem");
     exit(EXIT_FAILURE);
