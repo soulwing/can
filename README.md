@@ -16,7 +16,7 @@ Do all this stuff as root.
 #### Filesystem
 ```
 mkdir -p /var/can/mnt
-mkdir -p /var/can/{container,config,layers}
+mkdir -p /var/can/aufs/{container,config,layers}
 ```
 
 #### Network namespace
