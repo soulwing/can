@@ -49,8 +49,10 @@ int main(int argc, char * const argv[])
 {
   void *child_stack = malloc(CHILD_STACK_BYTES);
 
-  conf_init(argc, argv);
-  
+  if (conf_init(argc, argv) != 0) {
+    exit(EXIT_FAILURE);
+  }
+
   pid_t child_pid = clone(child_fn, child_stack + CHILD_STACK_BYTES, 
       CLONE_NEWPID | CLONE_NEWNS | SIGCHLD, NULL);
   if (child_pid == -1) {
@@ -64,12 +66,11 @@ int main(int argc, char * const argv[])
 
 int child_fn(void *arg)
 {
-  char * const argv[2] = { EXEC_PATH, NULL };
 
   /* set network namespace if specified */
   const char * const netns_name = conf_netns_name();
   if (netns_name != null) {
-    if (set_net_ns(netns_name) != 0) {
+    if (set_netns(netns_name) != 0) {
       perror("error setting network namespace");
       exit(EXIT_FAILURE);
     }
@@ -78,7 +79,7 @@ int child_fn(void *arg)
   /* set hostname for our can, if desired */
   const char * const hostname = conf_host_name();
   if (hostname != NULL) {
-    if (unshare(CLONE_UTS) != 0) {
+    if (unshare(CLONE_NEWUTS) != 0) {
       perror("error creating UTS namespace");
       exit(EXIT_FAILURE);
     }
@@ -142,7 +143,7 @@ int child_fn(void *arg)
   }
 
   /* execute the specified command */
-  const char * const command_argv = conf_command_argv();
+  const char * const command_argv[] = conf_command_argv();
   if (execv(argv[0], argv) != 0) {
     perror("error executing command");
     exit(EXIT_FAILURE);
