@@ -44,6 +44,6 @@ const char *conf_root_path(void);
 
 const char *conf_aufs_path(void);
 
-const char **conf_command_argv(void);
+char * const *conf_command_argv(void);
 
 #endif /* ! _CONFIG_H */

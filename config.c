@@ -30,10 +30,10 @@ static char * netns_name = "ns0";
 static const char *host_name = DEFAULT_HOST_NAME;
 static const char *root_path = DEFAULT_ROOT_PATH;
 static const char *aufs_path = DEFAULT_AUFS_PATH;
-static const char *command_argv[] = { DEFAULT_COMMAND, 0 };
+static char * const command_argv = 0;
 
 
-static const char *default_command_argv[] = { DEFAULT_COMMAND, 0 };
+static char * const default_command_argv[] = { DEFAULT_COMMAND, 0 };
 static const char * opts = "tn:h::r:f:";
 
 static struct option long_opts[] = 
@@ -108,7 +108,7 @@ const char * conf_aufs_path(void)
   return aufs_path;
 }
 
-const char **conf_command_argv(void)
+char * const *conf_command_argv(void)
 {
   return command_argv;
 }

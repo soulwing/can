@@ -23,6 +23,6 @@
 #ifndef _NETNS_H
 #define _NETNS_H
 
-int set_netns(char * const name);
+int set_netns(const char * name);
 
 #endif /* ! _NETNS_H */
