@@ -73,7 +73,7 @@ static void append_layers(String *opts, char * const aufs_path)
 {
   struct dirent **namelist;
   String *path = dstr_init(aufs_path);
-  dstr_append(AUFS_LAYERS_PATH);
+  dstr_append(path, AUFS_LAYERS_PATH);
 
   int n = scandir(dstr_text(path), &namelist, NULL, versionsort);
   dstr_free(path);
