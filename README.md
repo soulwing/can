@@ -36,13 +36,20 @@ iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth0 -j MASQUERADE
 
 #### Root fileystem layer
 
-Untar `alpine-minirootfs-3.6.2-x86_64.tar.gz` ([download from here](https://alpinelinux.org/downloads/)) in a directory named `0` in the `layers` directory.
+Get the Alpine Mini Root Filesystem (`alpine-minirootfs-3.6.2-x86_64.tar.gz`) from the [Alpine Linux Downloads page](https://alpinelinux.org/downloads/).
 
-Put an `etc/resolv.conf` file in `/var/can/aufs/config`.
+```
+mkdir /var/can/aufs/layers/0
+tar -C /var/can/aufs/layers/0 -zxpvf alpine-minirootfs-3.6.2-x86_64.tar.gz
+```
+
+#### Configuration layer
+
+Create a `resolv.conf` file.
 
 ```
 mkdir /var/can/aufs/config/etc
-echo -n "nameserver 8.8.8.8" > /var/can/aufs/config/etc/resolv.conf
+echo "nameserver 8.8.8.8"  >/var/can/aufs/config/etc/resolv.conf
 ```
 
 ### Run
