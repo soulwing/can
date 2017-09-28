@@ -34,7 +34,7 @@
 
 #define NET_NAMESPACE_PATH  "/var/run/netns"
 
-int set_netns(const char * const name)
+int set_netns(char * const name)
 {
   String *ns_path = dstr_init(NET_NAMESPACE_PATH);
   dstr_append(ns_path, "/");
