@@ -87,7 +87,7 @@ int conf_init(int argc, char * const argv[])
   }
 
   printf("use_tmpfs=%d netns_name=%s root_path=%s aufs_path=%s host_name=%s\n",
-      use_tmpfs, netns_name, root_path, host_name);
+      use_tmpfs, netns_name, root_path, aufs_path, host_name);
 
   int i = 0;
   printf("command: ");
