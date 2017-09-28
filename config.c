@@ -89,12 +89,15 @@ int conf_init(int argc, char * const argv[])
   printf("use_tmpfs=%d netns_name=%s root_path=%s aufs_path=%s host_name=%s\n",
       use_tmpfs, netns_name, root_path, aufs_path, host_name);
 
-  int i = 0;
-  printf("command: ");
-  while (command_argv[i] != 0) {
-    printf("%s ", command_argv[i]);
-    i++;
+  if (command_argv != 0) {
+    int i = 0;
+    printf("command: ");
+    while (command_argv[i] != 0) {
+      printf("%s ", command_argv[i]);
+      i++;
+    }
   }
+    
   return 0;
 }
 
@@ -125,5 +128,6 @@ const char * conf_aufs_path(void)
 
 char * const *conf_command_argv(void)
 {
+  if (command_argv == 0) return default_command_argv;
   return command_argv;
 }
