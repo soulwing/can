@@ -20,11 +20,19 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#define _GNU_SOURCE
+
 #include <stdlib.h>
 #include <unistd.h>
+#include <sched.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
+#include "dstring.h"
 #include "netns.h"
 
+#define NET_NAMESPACE_PATH  "/var/run/netns"
 
 int set_netns(const char * const name)
 {

@@ -69,7 +69,7 @@ static String * aufs_opts() {
   return opts;
 }
 
-static void append_layers(String *opts, const char * const aufs_path);
+static void append_layers(String *opts, char * const aufs_path);
 {
   struct dirent **namelist;
   

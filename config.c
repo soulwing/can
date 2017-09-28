@@ -20,6 +20,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#define _GNU_SOURCE
+
 #include "config.h"
 
 static int use_tmpfs = 1;

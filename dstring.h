@@ -61,8 +61,21 @@ void dstr_append(String *s, const char *text);
  */
 void dstr_free(String *s);
 
+
+/*!
+ * \brief Gets the character pointer representation of a string.
+ * 
+ * \param[in] s the subject string
+ * \return a character pointer for the current contents of the given string
+ */
 char * const dstr_text(String *s);
 
+/*!
+ * \brief Gets the length of a string.
+ * 
+ * \param[in] s the subject string
+ * \return length of the string in characters
+ */
 size_t dstr_len(String *s);
 
 
