@@ -69,7 +69,7 @@ int child_fn(void *arg)
 
   /* set network namespace if specified */
   char * const netns_name = conf_netns_name();
-  if (netns_name != null) {
+  if (netns_name != NULL) {
     if (set_netns(netns_name) != 0) {
       perror("error setting network namespace");
       exit(EXIT_FAILURE);
@@ -143,7 +143,7 @@ int child_fn(void *arg)
   }
 
   /* execute the specified command */
-  char * const command_argv[] = conf_command_argv();
+  char ** const command_argv = conf_command_argv();
   if (execv(argv[0], argv) != 0) {
     perror("error executing command");
     exit(EXIT_FAILURE);

@@ -32,13 +32,9 @@
 #define DEFAULT_AUFS_PATH   "/var/can/aufs"
 #define PROC_PATH           "/proc"
 
-void conf_init(int argc, char * const argv[]);
+int conf_init(int argc, char * const argv[]);
 
 int conf_use_tmpfs(void);
-
-int conf_clone_newnet(void);
-
-int conf_clone_newuts(void);
 
 char * const conf_netns_name(void);
 
