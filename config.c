@@ -92,8 +92,8 @@ int conf_init(int argc, char * const argv[])
         aufs_path = optarg;
         break;
       case 't':
-        if (tmp_path_count < MAX_TMP_PATHS) {
-          tmp_paths[tmp_path_count++] = optarg;
+        if (tmp_paths_count < MAX_TMP_PATHS) {
+          tmp_paths[tmp_paths_count++] = optarg;
         }
         else {
           fprintf(stderr, "too many tmpfs paths; %s will not use tmpfs\n", optarg);
