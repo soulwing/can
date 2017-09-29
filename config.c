@@ -49,7 +49,7 @@ static const char * opts = "n:h:r:f:";
 static struct option long_opts[] = 
 {
   { "no-tmpfs", no_argument, &use_tmpfs, 0 },
-  { "no-chroot", no_argumnent, &use_chroot, 0},
+  { "no-chroot", no_argument, &use_chroot, 0},
   { "netns", required_argument, 0, 'n' },
   { "hostname", required_argument, 0, 'h' },
   { "root", required_argument, 0, 'r' },
