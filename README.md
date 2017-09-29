@@ -8,10 +8,8 @@ and their application to container systems such as [Docker](https://docker.com) 
 a simple demo written in C. _Can_ demonstrates the use of many of the Linux namespace types, as well as related features such _chroot_, layered union filesystems (_aufs_),
 and _tmpfs_. 
 
-_Can_ sets up a simple container-like environment using a layered fileystem and chroot,
-and runs in isolated process ID and mount namespaces. Optionally, the container can 
-use an existing isolated network namespace and can create its own UTS namespace for
-setting a hostname in the container.
+_Can_ sets up a simple container-like environment, optionally using a layered fileystem and chroot, and runs in isolated process ID and mount namespaces. Optionally, the container can use an existing isolated network namespace and 
+can create its own UTS namespace for setting a hostname in the container.
 
 ## Guide to the Source Code
 
