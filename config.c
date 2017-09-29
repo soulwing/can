@@ -96,6 +96,9 @@ int conf_init(int argc, char * const argv[])
   }
 
   if (optind < argc) {
+    if (strcmp("--", argv[optind]) == 0) {
+      optind++;
+    }
     command_argv = argv + optind;
   }
 
