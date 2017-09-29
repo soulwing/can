@@ -41,7 +41,7 @@ const char *conf_root_path(void);
 
 const char *conf_aufs_path(void);
 
-const char * const *conf_temp_paths(void);
+const char * const *conf_tmp_paths(void);
 
 char * const *conf_command_argv(void);
 
