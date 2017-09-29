@@ -88,7 +88,7 @@ int child_fn(void *arg)
     }
   }
 
-  /* don't want to inherit shared root mount point in our namespace */
+  /* don't want a shared root mount point in our namespace */
   if (mount(NULL, "/", NULL, MS_PRIVATE, NULL) != 0) {
     perror("error unsharing root filesystem");
     exit(EXIT_FAILURE);
@@ -100,45 +100,54 @@ int child_fn(void *arg)
     exit(EXIT_FAILURE);
   }
 
-  /* mount root filesystem for our can */
-  const char *root_path = conf_root_path();
-  if (mount_aufs(root_path) != 0) {
-    perror("error mounting container root filesystem");
-    exit(EXIT_FAILURE);
-  }
-
-  /* mount proc filesystem for our can */
-  if (mount_proc(root_path) != 0) {
-    perror("error mounting container /proc filesystem");
-    exit(EXIT_FAILURE);
-  }
-
-  /* use tmpfs for paths with transient stuff in them, if desired */
-  if (conf_use_tmpfs()) {
-    if (mount_tmpfs(root_path, "/tmp") != 0) {
-      perror("error mounting container /tmp filesystem");
-      exit(EXIT_FAILURE);    
+  if (conf_use_chroot()) {
+    /* mount root filesystem for our can */
+    const char *root_path = conf_root_path();
+    if (mount_aufs(root_path) != 0) {
+      perror("error mounting container root filesystem");
+      exit(EXIT_FAILURE);
     }
-    
-    if (mount_tmpfs(root_path, "/var/run") != 0) {
-      perror("error mounting container /var/run filesystem");
-      exit(EXIT_FAILURE);    
-    }
-    
-    if (mount_tmpfs(root_path, "/var/tmp") != 0) {
-      perror("error mounting container /var/tmp filesystem");
-      exit(EXIT_FAILURE);    
+
+    /* mount proc filesystem for our can */
+    if (mount_proc(root_path) != 0) {
+      perror("error mounting container /proc filesystem");
+      exit(EXIT_FAILURE);
     }    
-  }
+
+    /* use tmpfs for paths with transient stuff in them, if desired */
+    if (conf_use_tmpfs()) {
+      if (mount_tmpfs(root_path, "/tmp") != 0) {
+        perror("error mounting container /tmp filesystem");
+        exit(EXIT_FAILURE);    
+      }
+      
+      if (mount_tmpfs(root_path, "/var/run") != 0) {
+        perror("error mounting container /var/run filesystem");
+        exit(EXIT_FAILURE);    
+      }
+      
+      if (mount_tmpfs(root_path, "/var/tmp") != 0) {
+        perror("error mounting container /var/tmp filesystem");
+        exit(EXIT_FAILURE);    
+      }    
+    }
   
-  /* set root filesystem for our can */
-  if (chroot(root_path) != 0) {
-    perror("error changing root filesystem");
-    exit(EXIT_FAILURE);
+    /* set root filesystem for our can */
+    if (chroot(root_path) != 0) {
+      perror("error changing root filesystem");
+      exit(EXIT_FAILURE);
+    }
+    if (chdir("/") != 0) {
+      perror("error setting root as current directory");
+      exit(EXIT_FAILURE);
+    }
   }
-  if (chdir("/") != 0) {
-    perror("error setting root as current directory");
-    exit(EXIT_FAILURE);
+  else {    // no chroot
+    /* mount proc filesystem for our can */
+    if (mount_proc("/") != 0) {
+      perror("error mounting container /proc filesystem");
+      exit(EXIT_FAILURE);
+    }    
   }
 
   /* execute the specified command */
