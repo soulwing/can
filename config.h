@@ -33,8 +33,6 @@ void conf_usage(const char *argv0, FILE *out);
 
 int conf_init(int argc, char * const argv[]);
 
-int conf_use_chroot(void);
-
 int conf_use_tmpfs(void);
 
 const char *conf_netns_name(void);

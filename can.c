@@ -100,12 +100,16 @@ int child_fn(void *arg)
     exit(EXIT_FAILURE);
   }
 
-  if (conf_use_chroot()) {
-    /* mount root filesystem for our can */
-    const char *root_path = conf_root_path();
-    if (mount_aufs(root_path) != 0) {
-      perror("error mounting container root filesystem");
-      exit(EXIT_FAILURE);
+  const char *root_path = conf_root_path();
+  if (root_path != NULL) {
+  
+    /* mount a layered AUFS fileystem */
+    const char *aufs_path = conf_aufs_path();
+    if (aufs_path != NULL) {
+      if (mount_aufs(aufs_path, root_path) != 0) {
+        perror("error mounting container root filesystem");
+        exit(EXIT_FAILURE);
+      }
     }
 
     /* mount proc filesystem for our can */

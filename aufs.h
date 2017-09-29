@@ -23,6 +23,6 @@
 #ifndef _AUFS_H
 #define _AUFS_H
 
-int mount_aufs(const *aufs_path, const char *root_path);
+int mount_aufs(const char *aufs_path, const char *root_path);
 
 #endif /* ! _AUFS_H */
