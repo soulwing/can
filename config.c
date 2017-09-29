@@ -107,6 +107,11 @@ int conf_init(int argc, char * const argv[])
   return 0;
 }
 
+int conf_use_chroot(void)
+{
+  return use_chroot;
+}
+
 int conf_use_tmpfs(void)
 {
   return use_tmpfs;
