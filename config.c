@@ -38,7 +38,8 @@ static const char *host_name = 0;
 
 static const char *root_path;
 static const char *aufs_path;
-static const int tmp_paths_count = 0;
+
+static int tmp_paths_count = 0;
 static const char *tmp_paths[MAX_TMP_PATHS + 1];
 
 static char * const *command_argv = 0;
