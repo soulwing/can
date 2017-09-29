@@ -193,7 +193,7 @@ part of the writable container layer.
 #### Using tmpfs
 
 Inside of a can that uses _chroot_ you might want scratch space on the disk to be
-backed by _tmpfs_ filesystems. You can do that with _can_ do.
+backed by _tmpfs_ filesystems. You can do that with _can_ too.
 
 ```
 sudo ./can --chroot /var/can/mnt --fs /var/can/aufs --tmpfs /tmp --tmpfs /run
