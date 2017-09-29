@@ -31,6 +31,7 @@
 
 #define TMPFS_TYPE  "tmpfs"
 
+static int mount_tmpfs_at_path(const char *root_path, const char *path);
 
 int mount_tmpfs(const char *root_path, const char * const *paths)
 {
