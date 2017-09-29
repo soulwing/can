@@ -98,6 +98,7 @@ sudo ip address add 10.0.0.1/24 dev veth0
 sudo ip link set veth0 up
 sudo ip netns exec ns0 ip address add 10.0.0.10/24 dev eth0
 sudo ip netns exec ns0 ip link set eth0 up
+sudo ip netns exec ns0 ip link set lo up
 sudo ip netns exec ns0 ip route add default via 10.0.0.1
 sudo sysctl -w net.ipv4.ip_forward=1
 sudo iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o ${HOST_IF} -j MASQUERADE
