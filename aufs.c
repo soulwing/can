@@ -45,7 +45,7 @@ int mount_aufs(const char *aufs_path, const char *root_path)
 {
   String *opts = aufs_opts(aufs_path);
 
-  int rc = mount(SOURCE_NAME, path, AUFS_TYPE, 0, dstr_text(opts));
+  int rc = mount(SOURCE_NAME, root_path, AUFS_TYPE, 0, dstr_text(opts));
   if (rc == 0) {
     rc = mount(NULL, root_path, NULL, MS_PRIVATE, NULL);
   }
