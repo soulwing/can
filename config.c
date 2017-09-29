@@ -134,7 +134,7 @@ const char * conf_aufs_path(void)
   return aufs_path;
 }
 
-const char * const *conf_temp_paths(void)
+const char * const *conf_tmp_paths(void)
 {
   return tmp_paths;
 }
