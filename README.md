@@ -128,6 +128,10 @@ sudo mkdir -p /var/can/aufs/{image,config,container}
 
 Inside the image directory create a base image layer, by creating a subdirectory
 named `0` and untarring the [Alpine Mini Root Filesystem](https://alpinelinux.org/downloads/) inside of it.
+```
+sudo mkdir /var/can/aufs/image/0
+tar -C /var/can/aufs/image/0 -zpxvf apline-minirootfs.tar.gz
+```
 
 You can leave the `config` and `container` layers empty for the moment.
 
