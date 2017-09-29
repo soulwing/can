@@ -117,7 +117,7 @@ and try pinging the Google nameserver at 8.8.8.8.
 #### Simulating Docker Layers Using AUFS
 
 _Can_ also knows how to simulate the concepts of filesystem layers for images and 
-containers.
+containers. It does this using AUFS.
 
 Create a directory structure that will hold the layers ("branches" in AUFS-speak).
 
@@ -141,8 +141,8 @@ Inside of the can, if you run `mount` you'll see that your root filesystem is of
 `aufs`. 
 
 If you create or edit a file anywhere on the filesystem, after you exit the
-can you should the file(s) you touched in `/var/can/aufs/container`. The `container`
-directory simulates Docker's writable container layer.
+can you should see the file(s) you touched in `/var/can/aufs/container`. The 
+`container` directory simulates Docker's writable container layer.
 
 Let's do a more compelling demo.
 
