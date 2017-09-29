@@ -30,9 +30,8 @@
 
 #include "dstring.h"
 #include "aufs.h"
-#include "config.h"
 
-#define SOURCE_NAME         "root"
+#define SOURCE_NAME         "aufs"
 #define AUFS_TYPE           "aufs"
 #define AUFS_LAYERS_PATH    "/layers"
 #define AUFS_CONFIG_PATH    "/config"
@@ -42,13 +41,13 @@
 static String * aufs_opts();
 static void append_layers(String *opts, const char *aufs_path);
 
-int mount_aufs(const char *path)
+int mount_aufs(const char *aufs_path, const char *root_path)
 {
-  String *opts = aufs_opts();
+  String *opts = aufs_opts(aufs_path);
 
   int rc = mount(SOURCE_NAME, path, AUFS_TYPE, 0, dstr_text(opts));
   if (rc == 0) {
-    rc = mount(NULL, path, NULL, MS_PRIVATE, NULL);
+    rc = mount(NULL, root_path, NULL, MS_PRIVATE, NULL);
   }
 
   dstr_free(opts);
@@ -56,8 +55,7 @@ int mount_aufs(const char *path)
   return rc;
 }
 
-static String * aufs_opts() {
-  const char * aufs_path = conf_aufs_path();
+static String * aufs_opts(const char *aufs_path) {
   String *opts = dstr_init("dirs=");
   dstr_append(opts, aufs_path);
   dstr_append(opts, AUFS_CONTAINER_PATH);

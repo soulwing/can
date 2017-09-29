@@ -33,7 +33,6 @@
 #define DEFAULT_AUFS_PATH   "/var/can/aufs"
 
 static int use_tmpfs = 1;
-static int use_chroot = 1;
 static char * netns_name = 0;
 static const char *host_name = 0;
 
@@ -49,10 +48,9 @@ static const char * opts = "n:h:r:f:";
 static struct option long_opts[] = 
 {
   { "no-tmpfs", no_argument, &use_tmpfs, 0 },
-  { "no-chroot", no_argument, &use_chroot, 0},
   { "netns", required_argument, 0, 'n' },
   { "hostname", required_argument, 0, 'h' },
-  { "root", required_argument, 0, 'r' },
+  { "chroot", required_argument, 0, 'r' },
   { "fs", required_argument, 0, 'f' },
   { 0, 0, 0, 0 }
 };
@@ -62,11 +60,10 @@ void conf_usage(const char *argv0, FILE *out)
   fprintf(out, "usage: %s [options] [command...]\n", argv0);
   fprintf(out, "options\n");
   fprintf(out, "  -f path, --fs path         filesystem location for AUFS branches\n");
-  fprintf(out, "  -r path, --root path       path at which to mount the can's root filesystem\n");
+  fprintf(out, "  -r path, --chroot path     root path for the can\n");
   fprintf(out, "  -n name, --netns name      name of an existing network namespace for the can\n");
   fprintf(out, "  -h name, --hostname name   host name for the can\n");
   fprintf(out, "  --no-tmpfs                 don't use tmpfs for /tmp, /run, etc\n");
-  fprintf(out, "  --no-chroot                don't chroot in the can\n");
   fflush(out);
 }
 
@@ -105,11 +102,6 @@ int conf_init(int argc, char * const argv[])
   }
 
   return 0;
-}
-
-int conf_use_chroot(void)
-{
-  return use_chroot;
 }
 
 int conf_use_tmpfs(void)
