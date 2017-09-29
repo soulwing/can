@@ -119,21 +119,9 @@ int child_fn(void *arg)
     }    
 
     /* use tmpfs for paths with transient stuff in them, if desired */
-    if (conf_use_tmpfs()) {
-      if (mount_tmpfs(root_path, "/tmp") != 0) {
-        perror("error mounting container /tmp filesystem");
-        exit(EXIT_FAILURE);    
-      }
-      
-      if (mount_tmpfs(root_path, "/var/run") != 0) {
-        perror("error mounting container /var/run filesystem");
-        exit(EXIT_FAILURE);    
-      }
-      
-      if (mount_tmpfs(root_path, "/var/tmp") != 0) {
-        perror("error mounting container /var/tmp filesystem");
-        exit(EXIT_FAILURE);    
-      }    
+    if (mount_tmpfs(root_path, conf_tmp_paths()) != 0) {
+      perror("error mounting container /tmp filesystem");
+      exit(EXIT_FAILURE);          
     }
   
     /* set root filesystem for our can */
@@ -141,6 +129,7 @@ int child_fn(void *arg)
       perror("error changing root filesystem");
       exit(EXIT_FAILURE);
     }
+
     if (chdir("/") != 0) {
       perror("error setting root as current directory");
       exit(EXIT_FAILURE);

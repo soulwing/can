@@ -31,7 +31,20 @@
 
 #define TMPFS_TYPE  "tmpfs"
 
-int mount_tmpfs(const char *root_path, const char *path)
+
+int mount_tmpfs(const char *root_path, const char * const *paths)
+{
+  int i = 0;
+  int rc = 0;
+  while (paths[i] != 0) {
+    rc = mount_tmpfs_at_path(root_path, paths[i]);
+    if (rc != 0) return rc;
+    i++;
+  }
+  return 0;
+}
+
+static int mount_tmpfs_at_path(const char *root_path, const char *path)
 {
   String *mount_path = dstr_init(root_path);
   dstr_append(mount_path, path);

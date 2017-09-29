@@ -33,8 +33,6 @@ void conf_usage(const char *argv0, FILE *out);
 
 int conf_init(int argc, char * const argv[]);
 
-int conf_use_tmpfs(void);
-
 const char *conf_netns_name(void);
 
 const char *conf_host_name(void);
@@ -42,6 +40,8 @@ const char *conf_host_name(void);
 const char *conf_root_path(void);
 
 const char *conf_aufs_path(void);
+
+const char * const *conf_temp_paths(void):
 
 char * const *conf_command_argv(void);
 

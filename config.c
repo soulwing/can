@@ -30,6 +30,7 @@
 #include <getopt.h>
 
 #define DEFAULT_COMMAND     "/bin/sh"
+#define MAX_TMP_PATHS       31
 
 static int use_tmpfs = 1;
 static char * netns_name = 0;
@@ -37,16 +38,17 @@ static const char *host_name = 0;
 
 static const char *root_path;
 static const char *aufs_path;
+static const int tmp_paths_count = 0;
+static const char *tmp_paths[MAX_TMP_PATHS + 1];
 
 static char * const *command_argv = 0;
 
-
 static char * const default_command_argv[] = { DEFAULT_COMMAND, 0 };
-static const char * opts = "n:h:r:f:";
+static const char * opts = "n:h:r:f:t:";
 
 static struct option long_opts[] = 
 {
-  { "no-tmpfs", no_argument, &use_tmpfs, 0 },
+  { "tmpfs", required_argument, 0, 't' },
   { "netns", required_argument, 0, 'n' },
   { "hostname", required_argument, 0, 'h' },
   { "chroot", required_argument, 0, 'r' },
@@ -60,9 +62,9 @@ void conf_usage(const char *argv0, FILE *out)
   fprintf(out, "options\n");
   fprintf(out, "  -f path, --fs path         filesystem location for AUFS branches\n");
   fprintf(out, "  -r path, --chroot path     root path for the can\n");
+  fprintf(out, "  -t path, --tmpfs path      mount a tmpfs at the given path");
   fprintf(out, "  -n name, --netns name      name of an existing network namespace for the can\n");
   fprintf(out, "  -h name, --hostname name   host name for the can\n");
-  fprintf(out, "  --no-tmpfs                 don't use tmpfs for /tmp, /run, etc\n");
   fflush(out);
 }
 
@@ -89,6 +91,14 @@ int conf_init(int argc, char * const argv[])
       case 'f':
         aufs_path = optarg;
         break;
+      case 't':
+        if (tmp_path_count < MAX_TMP_PATHS) {
+          tmp_paths[tmp_path_count++] = optarg;
+        }
+        else {
+          fprintf(stderr, "too many tmpfs paths; %s will not use tmpfs\n", optarg);
+        }
+        break;
       case '?':
       default:
         return -1;
@@ -97,18 +107,10 @@ int conf_init(int argc, char * const argv[])
   }
 
   if (optind < argc) {
-    if (strcmp("--", argv[optind]) == 0) {
-      optind++;
-    }
     command_argv = argv + optind;
   }
 
   return 0;
-}
-
-int conf_use_tmpfs(void)
-{
-  return use_tmpfs;
 }
 
 const char * conf_netns_name(void)
@@ -129,6 +131,11 @@ const char * conf_root_path(void)
 const char * conf_aufs_path(void)
 {
   return aufs_path;
+}
+
+const char * const *conf_temp_paths(void)
+{
+  return tmp_paths;
 }
 
 char * const *conf_command_argv(void)

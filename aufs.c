@@ -33,7 +33,7 @@
 
 #define SOURCE_NAME         "aufs"
 #define AUFS_TYPE           "aufs"
-#define AUFS_LAYERS_PATH    "/layers"
+#define AUFS_IMAGE_PATH     "/image"
 #define AUFS_CONFIG_PATH    "/config"
 #define AUFS_CONTAINER_PATH "/container"
 
@@ -71,7 +71,7 @@ static void append_layers(String *opts, const char *aufs_path)
 {
   struct dirent **namelist;
   String *path = dstr_init(aufs_path);
-  dstr_append(path, AUFS_LAYERS_PATH);
+  dstr_append(path, AUFS_IMAGE_PATH);
 
   int n = scandir(dstr_text(path), &namelist, NULL, versionsort);
   dstr_free(path);
@@ -86,7 +86,7 @@ static void append_layers(String *opts, const char *aufs_path)
         && strncmp(name, "..", 2) != 0) {
       dstr_append(opts, ":");
       dstr_append(opts, aufs_path);
-      dstr_append(opts, AUFS_LAYERS_PATH);
+      dstr_append(opts, AUFS_IMAGE_PATH);
       dstr_append(opts, "/");
       dstr_append(opts, name);
       dstr_append(opts, "=ro");
