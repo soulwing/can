@@ -121,7 +121,7 @@ int conf_init(int argc, char * const argv[])
   return 0;
 }
 
-int conf_use_mountns(void)
+int conf_use_mount_ns(void)
 {
   return use_mount_ns;
 }
