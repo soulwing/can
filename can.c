@@ -88,16 +88,18 @@ int child_fn(void *arg)
     }
   }
 
-  /* don't want a shared root mount point in our namespace */
-  if (mount(NULL, "/", NULL, MS_PRIVATE, NULL) != 0) {
-    perror("error unsharing root filesystem");
-    exit(EXIT_FAILURE);
-  }
+  if (conf_use_mount_ns()) {
+    /* don't want a shared root mount point in our namespace */
+    if (mount(NULL, "/", NULL, MS_PRIVATE, NULL) != 0) {
+      perror("error unsharing root filesystem");
+      exit(EXIT_FAILURE);
+    }
 
-  /* don't want other namespaces to see our /proc mount */
-  if (mount(NULL, PROC_PATH, NULL, MS_PRIVATE, NULL) != 0) {
-    perror("error unsharing proc filesystem");
-    exit(EXIT_FAILURE);
+    /* don't want other namespaces to see our /proc mount */
+    if (mount(NULL, PROC_PATH, NULL, MS_PRIVATE, NULL) != 0) {
+      perror("error unsharing proc filesystem");
+      exit(EXIT_FAILURE);
+    }    
   }
 
   const char *root_path = conf_root_path();
@@ -135,7 +137,7 @@ int child_fn(void *arg)
       exit(EXIT_FAILURE);
     }
   }
-  else {    // no chroot
+  else if (conf_use_mount_ns()) {    // no chroot, but still using mount namespace
     /* mount proc filesystem for our can */
     if (mount_proc("/") != 0) {
       perror("error mounting container /proc filesystem");

@@ -32,6 +32,7 @@
 #define DEFAULT_COMMAND     "/bin/sh"
 #define MAX_TMP_PATHS       31
 
+static int use_mount_ns = 1;
 static int use_tmpfs = 1;
 static char * netns_name = 0;
 static const char *host_name = 0;
@@ -49,6 +50,7 @@ static const char * opts = "n:h:r:f:t:";
 
 static struct option long_opts[] = 
 {
+  { "no-mount-ns", no_argument, &use_mount_ns, 0 }
   { "tmpfs", required_argument, 0, 't' },
   { "netns", required_argument, 0, 'n' },
   { "hostname", required_argument, 0, 'h' },
@@ -66,6 +68,7 @@ void conf_usage(const char *argv0, FILE *out)
   fprintf(out, "  -t path, --tmpfs path      mount a tmpfs at the given path");
   fprintf(out, "  -n name, --netns name      name of an existing network namespace for the can\n");
   fprintf(out, "  -h name, --hostname name   host name for the can\n");
+  fprintf(out, "  --no-mount-ns              don't use a mount namespace\n");
   fflush(out);
 }
 
@@ -107,11 +110,20 @@ int conf_init(int argc, char * const argv[])
 
   }
 
+  if (root_path != NULL) {
+    use_mount_ns = 1;
+  }
+  
   if (optind < argc) {
     command_argv = argv + optind;
   }
 
   return 0;
+}
+
+int conf_use_mountns(void)
+{
+  return use_mount_ns;
 }
 
 const char * conf_netns_name(void)
