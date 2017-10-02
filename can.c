@@ -147,7 +147,7 @@ int child_fn(void *arg)
 
   /* execute the specified command */
   char * const *argv = conf_command_argv();
-  if (execv(argv[0], argv) != 0) {
+  if (execvp(argv[0], argv) != 0) {
     perror("error executing command");
     exit(EXIT_FAILURE);
   }
