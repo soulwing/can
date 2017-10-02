@@ -50,7 +50,7 @@ static const char * opts = "n:h:r:f:t:";
 
 static struct option long_opts[] = 
 {
-  { "no-mount-ns", no_argument, &use_mount_ns, 0 }
+  { "no-mount-ns", no_argument, &use_mount_ns, 0 },
   { "tmpfs", required_argument, 0, 't' },
   { "netns", required_argument, 0, 'n' },
   { "hostname", required_argument, 0, 'h' },
@@ -113,7 +113,7 @@ int conf_init(int argc, char * const argv[])
   if (root_path != NULL) {
     use_mount_ns = 1;
   }
-  
+
   if (optind < argc) {
     command_argv = argv + optind;
   }
